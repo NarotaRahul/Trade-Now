@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Trade Now Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <style>
+    body {
+      background-color: #f8f9fa;
+      font-family: 'Segoe UI', sans-serif;
+    }
+    .sidebar {
+      height: 100vh;
+      background-color: #ffffff;
+      border-right: 1px solid #dee2e6;
+      position: fixed;
+      top: 56px;
+      left: 0;
+      width: 220px;
+      overflow-y: auto;
+    }
+    .sidebar a {
+      text-decoration: none;
+      padding: 10px 20px;
+      display: block;
+      color: #212529;
+      font-weight: 500;
+    }
+    .sidebar a:hover {
+      background-color: #f1f1f1;
+    }
+    .dashboard-content {
+      margin-left: 220px;
+      padding: 20px;
+      padding-top: 80px;
+    }
+    .btn-claim {
+      background-color: #195D17;
+      color: #fff;
+      border: none;
+    }
+    .btn-claim:hover {
+      background-color: #144c13;
+    }
+    .navbar-dark .navbar-nav .nav-link {
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="Index.html">Trade Now</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse justify-content-end" id="navbarContent">
+      <ul class="navbar-nav">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+            User
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li><a class="dropdown-item" href="profile.html">Profile</a></li>
+            <li><a class="dropdown-item" href="setting.html">Settings</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="logout.html">Logout</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="sidebar pt-4">
+  <h4 class="text-center mb-4">
+    <img src="/ChatGPT_Image_Jun_15__2025__09_55_37_AM-removebg-preview.png" alt="Trade Now" width="100">
+  </h4>
+  <a href="dashboard.html">Dashboard</a>
+  <a href="conections.html">Connections</a>
+  <a href="strategys.html">Strategys</a>
+  <a href="funds.html">Funds</a>
+  <a href="social.html">Social Trading</a>
+  <a href="extensions.html">Extensions</a>
+  <a href="profile.html">Profile</a>
+</div>
+
+<div class="dashboard-content">
+  <div class="alert alert-info d-flex justify-content-between align-items-center">
+    <div>
+      <strong>Verification Levels: Verified</strong><br>
+      Continue <a href="#">Verified Plus</a> to get higher fiat deposit and withdrawal limits<br>
+      Your current deposit limits is $1000
+    </div>
+    <button class="btn btn-outline-primary">Continue</button>
+  </div>
+
+  <div class="card mb-4">
+    <div class="card-body d-flex justify-content-between align-items-center">
+      <div>
+        <h5>🎁 Get Your $10 Welcome Bonus</h5>
+        <p class="mb-0">Instant Bonus Credit to your Funds</p>
+      </div>
+      <button class="btn btn-claim">Claim Now</button>
+    </div>
+  </div>
+
+  <div class="row text-center mb-4">
+    <div class="col-md-4">
+      <div class="card">
+        <div class="card-body">
+          <h5>Wallet</h5>
+          <p class="display-6" id="walletAmount">$0.00</p>
+          <p>0$ Last Deposit!</p>
+          <button class="btn btn-sm btn-outline-success" data-bs-toggle="modal" data-bs-target="#depositModal">Deposit</button>
+          <button class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#withdrawModal">Withdraw</button>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card">
+        <div class="card-body">
+          <h5>Connections</h5>
+          <p class="display-6">0</p>
+          <p>Current Types:<br>Total Equity: $0</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card">
+        <div class="card-body">
+          <h5>Subscriptions</h5>
+          <p class="display-6">0</p>
+          <p>Max Remaining: 0 Days<br>Min Remaining: 0 Days</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card mb-4">
+    <div class="card-header d-flex justify-content-between align-items-center">
+      <strong>Transaction History</strong>
+      <div class="d-flex gap-2 flex-wrap">
+        <select id="filterType" class="form-select form-select-sm" style="width: 120px;">
+          <option value="">All Types</option>
+          <option value="Deposit">Deposit</option>
+          <option value="Withdraw">Withdraw</option>
+        </select>
+        <input type="date" id="startDate" class="form-control form-control-sm">
+        <input type="date" id="endDate" class="form-control form-control-sm">
+        <button class="btn btn-sm btn-primary" onclick="renderTransactions()">Filter</button>
+        <button class="btn btn-sm btn-outline-secondary" onclick="resetFilters()">Reset</button>
+      </div>
+    </div>
+    <div class="card-body p-0">
+      <table class="table table-striped table-bordered wallet-table mb-0">
+        <thead class="table-light">
+          <tr>
+            <th>Date</th>
+            <th>Type</th>
+            <th>Method</th>
+            <th>Amount ($)</th>
+          </tr>
+        </thead>
+        <tbody id="transactionTableBody">
+          <tr><td colspan="4" class="text-center text-muted">No transactions yet</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">All Strategys</div>
+    <div class="card-body">
+      <table class="table table-bordered text-center mb-0">
+        <thead class="table-light">
+          <tr>
+            <th>Status</th>
+            <th>Strategys</th>
+            <th>Type</th>
+            <th>Days</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td colspan="4">0</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="depositModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title">Deposit Funds</h5></div>
+      <div class="modal-body">
+        <input type="number" class="form-control" id="depositAmount" placeholder="Enter amount">
+        <select class="form-select mt-2" id="depositMethod">
+          <option value="">Select Method</option>
+          <option>UPI</option>
+          <option>Bank Transfer</option>
+          <option>Crypto</option>
+        </select>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-success" onclick="makeTransaction('Deposit')">Deposit</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="withdrawModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title">Withdraw Funds</h5></div>
+      <div class="modal-body">
+        <input type="number" class="form-control" id="withdrawAmount" placeholder="Enter amount">
+        <select class="form-select mt-2" id="withdrawMethod">
+          <option value="">Select Method</option>
+          <option>UPI</option>
+          <option>Bank Transfer</option>
+          <option>Crypto</option>
+        </select>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-danger" onclick="makeTransaction('Withdraw')">Withdraw</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- JS -->
+<script>
+  let walletAmount = 0;
+  let transactions = [];
+
+  const depositAmount = document.getElementById('depositAmount');
+  const depositMethod = document.getElementById('depositMethod');
+  const withdrawAmount = document.getElementById('withdrawAmount');
+  const withdrawMethod = document.getElementById('withdrawMethod');
+  const transactionTableBody = document.getElementById('transactionTableBody');
+  const filterTypeElement = document.getElementById('filterType');
+  const startDateElement = document.getElementById('startDate');
+  const endDateElement = document.getElementById('endDate');
+
+  function loadData() {
+    const savedWallet = localStorage.getItem('walletAmount');
+    const savedTransactions = localStorage.getItem('transactions');
+    walletAmount = savedWallet ? parseFloat(savedWallet) : 0;
+    transactions = savedTransactions ? JSON.parse(savedTransactions) : [];
+  }
+
+  function saveData() {
+    localStorage.setItem('walletAmount', walletAmount.toFixed(2));
+    localStorage.setItem('transactions', JSON.stringify(transactions));
+  }
+
+  function updateWalletDisplay() {
+    document.getElementById('walletAmount').textContent = '$' + walletAmount.toFixed(2);
+  }
+
+  function makeTransaction(type) {
+    const amount = parseFloat(type === 'Deposit' ? depositAmount.value : withdrawAmount.value);
+    const method = type === 'Deposit' ? depositMethod.value : withdrawMethod.value;
+
+    if (isNaN(amount) || amount <= 0) {
+      alert("Please enter a valid amount.");
+      return;
+    }
+    if (!method) {
+      alert("Please select a method.");
+      return;
+    }
+    if (type === 'Withdraw' && amount > walletAmount) {
+      alert("Insufficient balance.");
+      return;
+    }
+
+    walletAmount += type === 'Deposit' ? amount : -amount;
+    transactions.push({
+      date: new Date().toISOString().slice(0, 10),
+      type,
+      method,
+      amount
+    });
+
+    saveData();
+    updateWalletDisplay();
+    renderTransactions();
+
+    const modalId = type === 'Deposit' ? 'depositModal' : 'withdrawModal';
+    const modal = bootstrap.Modal.getInstance(document.getElementById(modalId));
+    modal.hide();
+  }
+
+  function renderTransactions() {
+    const filterType = filterTypeElement.value;
+    const startDate = startDateElement.value;
+    const endDate = endDateElement.value;
+
+    let filtered = transactions.filter(t => {
+      const date = new Date(t.date);
+      return (!filterType || t.type === filterType) &&
+             (!startDate || date >= new Date(startDate)) &&
+             (!endDate || date <= new Date(endDate + "T23:59:59"));
+    });
+
+    transactionTableBody.innerHTML = filtered.length === 0
+      ? '<tr><td colspan="4" class="text-center text-muted">No transactions found</td></tr>'
+      : filtered.map(t => `
+        <tr>
+          <td>${t.date}</td>
+          <td>${t.type}</td>
+          <td>${t.method}</td>
+          <td>$${t.amount.toFixed(2)}</td>
+        </tr>
+      `).join('');
+  }
+
+  function resetFilters() {
+    filterTypeElement.value = '';
+    startDateElement.value = '';
+    endDateElement.value = '';
+    renderTransactions();
+  }
+
+  loadData();
+  updateWalletDisplay();
+  renderTransactions();
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
