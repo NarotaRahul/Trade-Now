@@ -37,7 +37,7 @@
 </head>
 <body>
 
-
+<!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <div class="container-fluid">
     <a class="navbar-brand" href="index.html">Trade Now</a>
@@ -55,7 +55,7 @@
   </div>
 </nav>
 
-
+<!-- Login Form -->
 <div class="login-container">
   <h2 class="text-center mb-4">Login</h2>
   <form id="loginForm" novalidate>
@@ -68,7 +68,7 @@
       <label for="password" class="form-label">Password</label>
       <input type="password" class="form-control" id="password" placeholder="Enter your password" required minlength="8">
       <i class="bi bi-eye-slash password-toggle" id="togglePassword"></i>
-      <div class="invalid-feedback">Password must be at-least 8 characters including combination of Uper-case,Lower-case & Special Characters .</div>
+      <div class="invalid-feedback">Password must be at least 8 characters including combination of uppercase, lowercase & special characters.</div>
     </div>
     <div class="mb-3 form-check">
       <input type="checkbox" class="form-check-input" id="remember">
@@ -79,7 +79,7 @@
   </form>
 </div>
 
-
+<!-- Toasts -->
 <div class="toast-container">
   <div class="toast align-items-center text-bg-success border-0" role="alert" id="successToast">
     <div class="d-flex">
@@ -95,6 +95,28 @@
   </div>
 </div>
 
+<!-- Verification Modal -->
+<div class="modal fade" id="verificationModal" tabindex="-1" aria-labelledby="verificationModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-0 shadow">
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title" id="verificationModalLabel">Verification Required</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <p>Enter the 6-digit verification code sent to your email.</p>
+        <input type="text" id="verificationCode" class="form-control" placeholder="Enter verification code" maxlength="6">
+        <div class="invalid-feedback mt-2" id="codeError">Invalid verification code.</div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button class="btn btn-primary" id="verifyBtn">Verify</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Footer -->
 <footer class="bg-dark text-white text-center p-3 mt-5">
   &copy; 2025 Trade Now. All rights reserved.
 </footer>
@@ -104,6 +126,10 @@
   const form = document.getElementById('loginForm');
   const toastSuccess = new bootstrap.Toast(document.getElementById('successToast'));
   const toastError = new bootstrap.Toast(document.getElementById('errorToast'));
+  const verificationModal = new bootstrap.Modal(document.getElementById('verificationModal'));
+  const codeInput = document.getElementById('verificationCode');
+  const codeError = document.getElementById('codeError');
+  const verifyBtn = document.getElementById('verifyBtn');
 
   document.getElementById("togglePassword").addEventListener("click", function () {
     const passwordInput = document.getElementById("password");
@@ -112,7 +138,6 @@
     this.classList.toggle("bi-eye");
     this.classList.toggle("bi-eye-slash");
   });
-
 
   form.addEventListener('submit', function (e) {
     e.preventDefault();
@@ -130,7 +155,7 @@
       email.classList.remove("is-invalid");
     }
 
-    if (password.value.trim().length < 6) {
+    if (password.value.trim().length < 8) {
       password.classList.add("is-invalid");
       isValid = false;
     } else {
@@ -142,6 +167,7 @@
       return;
     }
 
+    // Store login if "remember me" is checked
     if (remember) {
       localStorage.setItem('loginEmail', email.value.trim());
       localStorage.setItem('loginPassword', password.value.trim());
@@ -150,11 +176,30 @@
       localStorage.removeItem('loginPassword');
     }
 
-    toastSuccess.show();
-    setTimeout(() => {
-      window.location.href = 'dashboard.html';
-    }, 1100);
+    // Show verification modal
+    codeInput.value = '';
+    codeError.style.display = 'none';
+    codeInput.classList.remove('is-invalid');
+    verificationModal.show();
   });
+
+  // Simulated OTP check (replace with backend logic)
+  verifyBtn.addEventListener('click', function () {
+    const enteredCode = codeInput.value.trim();
+    const correctCode = "123456"; // <-- Replace with backend-generated OTP
+
+    if (enteredCode === correctCode) {
+      verificationModal.hide();
+      toastSuccess.show();
+      setTimeout(() => {
+        window.location.href = 'dashboard.html';
+      }, 1000);
+    } else {
+      codeError.style.display = 'block';
+      codeInput.classList.add('is-invalid');
+    }
+  });
+
 
   window.onload = function () {
     const storedEmail = localStorage.getItem('loginEmail');
