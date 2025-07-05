@@ -37,4 +37,4 @@ app.get('/api/connections', async (req, res) => {
   res.json(connections);
 });
 
-app.listen(5000, () => console.log('Server running at http://localhost:5000'));
+app.listen(5000, () => console.log('Server running at http://localhost:27017'));
