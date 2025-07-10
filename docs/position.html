@@ -3,63 +3,98 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Position Trading</title>
+  <title>Position Trading - Trade Now</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+  <style>
+    .navbar-brand img {
+      height: 40px;
+    }
+    body {
+      background: linear-gradient(to right, #f8f9fa, #e0f7fa);
+      font-family: 'Segoe UI', sans-serif;
+    }
+    .content-card {
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      padding: 30px;
+    }
+    h2, h4 {
+      color: #0d6efd;
+    }
+  </style>
 </head>
-<body class="bg-light">
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+    <div class="container">
+      <a class="navbar-brand" href="index.html">
+        <img src="logo.png" alt="Trade Now Logo" />
+        <span class="ms-2 fw-bold">Trade Now</span>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="Strategies.html">Strategies</a></li>
+          <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
+          <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
   <div class="container py-5">
-    <h2 class="mb-4 text-primary">Position Trading</h2>
+    <div class="content-card">
+      <h2 class="mb-4">Position Trading</h2>
 
-    <p>
-      <strong>Position trading</strong> is a long-term trading strategy where traders maintain positions for weeks, months, or even years. It focuses on capturing major price trends rather than small market fluctuations. This strategy is ideal for those who prefer minimal trading activity and are comfortable with long holding periods.
-    </p>
+      <p>
+        <strong>Position trading</strong> is a long-term trading strategy where traders hold positions for weeks, months, or even years, aiming to profit from large price trends over time.
+      </p>
 
-    <h4 class="mt-4 text-secondary">Key Features</h4>
-    <ul>
-      <li>Based on fundamental analysis (e.g., economic indicators, company performance, market cycles).</li>
-      <li>Utilizes technical analysis to determine entry and exit points.</li>
-      <li>Requires patience and a strong understanding of market trends.</li>
-      <li>Less affected by short-term volatility.</li>
-    </ul>
+      <h4 class="mt-4">Key Features</h4>
+      <ul>
+        <li>Based on fundamental and long-term technical analysis.</li>
+        <li>Focuses on major market trends, not short-term moves.</li>
+        <li>Low trade frequency and lower transaction costs.</li>
+      </ul>
 
-    <h4 class="mt-4 text-secondary">Advantages</h4>
-    <ul>
-      <li>Lower transaction costs due to fewer trades.</li>
-      <li>Less time-intensive compared to day or swing trading.</li>
-      <li>Potential for significant gains from large price movements.</li>
-    </ul>
+      <h4 class="mt-4">Advantages</h4>
+      <ul>
+        <li>Minimal time commitment for monitoring trades.</li>
+        <li>Potential for significant returns on long-term moves.</li>
+        <li>Reduces emotional trading and market noise.</li>
+      </ul>
 
-    <h4 class="mt-4 text-secondary">Disadvantages</h4>
-    <ul>
-      <li>Capital is tied up for long periods.</li>
-      <li>Requires deep knowledge of market fundamentals.</li>
-      <li>Possibility of large drawdowns if trends reverse unexpectedly.</li>
-    </ul>
+      <h4 class="mt-4">Disadvantages</h4>
+      <ul>
+        <li>Capital is locked in for extended periods.</li>
+        <li>Requires strong patience and discipline.</li>
+        <li>Risk of large drawdowns during trend reversals.</li>
+      </ul>
 
-    <h4 class="mt-4 text-secondary">Example Assets</h4>
-    <p>
-      Traders using this strategy often invest in:
-    </p>
-    <ul>
-      <li>Blue-chip stocks</li>
-      <li>ETFs (Exchange-Traded Funds)</li>
-      <li>Index funds</li>
-      <li>Major currency pairs</li>
-      <li>Cryptocurrencies (for long-term holders)</li>
-    </ul>
+      <h4 class="mt-4">Common Instruments</h4>
+      <ul>
+        <li>Index Funds & ETFs</li>
+        <li>Blue-Chip Stocks</li>
+        <li>Commodities like Gold & Oil</li>
+        <li>Major Forex Pairs</li>
+      </ul>
 
-    <h4 class="mt-4 text-secondary">Ideal For</h4>
-    <p>
-      Position trading is best suited for investors who:
-    </p>
-    <ul>
-      <li>Have a long-term investment mindset</li>
-      <li>Don’t want to monitor markets daily</li>
-      <li>Are comfortable with holding positions through market ups and downs</li>
-    </ul>
+      <h4 class="mt-4">Ideal For</h4>
+      <p>
+        Position trading suits investors with a long-term outlook who prefer stability and are less concerned with short-term volatility.
+      </p>
 
-    <a href="Strategies.html" class="btn btn-danger mt-4">← Back to Strategies</a>
+      <a href="Strategies.html" class="btn btn-outline-primary mt-4"><i class="bi bi-arrow-left"></i> Back to Strategies</a>
+    </div>
   </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
-
