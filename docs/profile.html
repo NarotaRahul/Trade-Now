@@ -2,20 +2,55 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Trader Profile - Trade Now</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
   <style>
     body {
-      background-color: #f0f2f5;
+      background: linear-gradient(135deg, #1f1c2c, #928dab);
       font-family: 'Poppins', sans-serif;
+      color: #fff;
     }
+
     .profile-card {
-      background: #fff;
+      background: rgba(255, 255, 255, 0.1);
       border-radius: 16px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.2);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
       padding: 30px;
+      color: #fff;
     }
+
+    .modal-content {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.2);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      color: #fff;
+    }
+
+    .form-control,
+    .form-select {
+      background-color: rgba(255, 255, 255, 0.15);
+      border: none;
+      color: #fff;
+    }
+
+    .form-control::placeholder {
+      color: #ccc;
+    }
+
+    .form-control:focus {
+      background-color: rgba(255, 255, 255, 0.25);
+      color: #fff;
+    }
+
+    .navbar-brand {
+      font-weight: 600;
+    }
+
     .profile-img {
       width: 100px;
       height: 100px;
@@ -23,13 +58,24 @@
       border-radius: 50%;
       border: 3px solid #0d6efd;
     }
-    .navbar-brand {
-      font-weight: 600;
+
+    .toast-container {
+      z-index: 9999;
     }
   </style>
 </head>
 <body>
 
+  <!-- Toast Notification -->
+  <div class="toast-container position-fixed bottom-0 end-0 p-3">
+    <div class="toast text-bg-success" id="successToast" role="alert">
+      <div class="toast-body">
+        Profile updated successfully!
+      </div>
+    </div>
+  </div>
+
+  <!-- Navbar -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
     <div class="container-fluid">
       <a class="navbar-brand" href="/docs/index.html">Trade Now</a>
@@ -47,6 +93,7 @@
     </div>
   </nav>
 
+  <!-- Profile Section -->
   <div class="container py-5">
     <div class="text-center mb-4">
       <h2>User Profile</h2>
@@ -86,7 +133,6 @@
 
             <div class="tab-pane fade" id="settings" role="tabpanel">
               <h5>Account Settings</h5>
-              <p>Manage notification preferences and language.</p>
               <form>
                 <div class="form-check form-switch mb-3">
                   <input class="form-check-input" type="checkbox" checked />
@@ -105,7 +151,6 @@
 
             <div class="tab-pane fade" id="security" role="tabpanel">
               <h5>Security Settings</h5>
-              <p>Manage password and 2FA.</p>
               <form>
                 <div class="mb-3">
                   <label class="form-label">Change Password</label>
@@ -123,12 +168,13 @@
     </div>
   </div>
 
+  <!-- Edit Modal -->
   <div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <form id="editProfileForm">
           <div class="modal-header">
-            <h5 class="modal-title" id="editProfileModalLabel">Edit Profile</h5>
+            <h5 class="modal-title">Edit Profile</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
           </div>
           <div class="modal-body">
@@ -162,25 +208,34 @@
     </div>
   </div>
 
+  <!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script>
-  
     window.onload = function () {
       const profile = JSON.parse(localStorage.getItem("traderProfile"));
       if (profile) {
-        document.getElementById("displayName").textContent = profile.fullName;
-        document.getElementById("displayEmail").textContent = profile.email;
-        document.getElementById("displayPhone").textContent = profile.phone;
-        document.getElementById("displayAbout").textContent = profile.about;
-        document.getElementById("fullName").value = profile.fullName;
-        document.getElementById("email").value = profile.email;
-        document.getElementById("phone").value = profile.phone;
-        document.getElementById("about").value = profile.about;
-        if (profile.image) {
-          document.getElementById("profileImage").src = profile.image;
-        }
+        document.getElementById("displayName").textContent = profile.fullName || "Default Name";
+        document.getElementById("displayEmail").textContent = profile.email || "default@example.com";
+        document.getElementById("displayPhone").textContent = profile.phone || "+91 **********";
+        document.getElementById("displayAbout").textContent = profile.about || "No info provided.";
+        document.getElementById("fullName").value = profile.fullName || "";
+        document.getElementById("email").value = profile.email || "";
+        document.getElementById("phone").value = profile.phone || "";
+        document.getElementById("about").value = profile.about || "";
+        if (profile.image) document.getElementById("profileImage").src = profile.image;
       }
     };
+
+    document.getElementById("profilePicInput").addEventListener("change", function () {
+      const file = this.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function () {
+          document.getElementById("profileImage").src = reader.result;
+        };
+        reader.readAsDataURL(file);
+      }
+    });
 
     document.getElementById("editProfileForm").addEventListener("submit", function (e) {
       e.preventDefault();
@@ -192,7 +247,7 @@
       const file = document.getElementById("profilePicInput").files[0];
 
       const emailRegex = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
-      const phoneRegex = /^\+91\s?[6-9]\d{9}$/;
+      const phoneRegex = /^(\+91[\s-]?)?[6-9]\d{9}$/;
 
       if (!emailRegex.test(email)) return alert("Invalid email format");
       if (!phoneRegex.test(phone)) return alert("Invalid phone number");
@@ -210,7 +265,7 @@
         document.getElementById("displayAbout").textContent = about;
         if (image) document.getElementById("profileImage").src = image;
 
-        alert("Profile updated!");
+        bootstrap.Toast.getOrCreateInstance(document.getElementById("successToast")).show();
         bootstrap.Modal.getInstance(document.getElementById("editProfileModal")).hide();
       };
 
@@ -218,7 +273,6 @@
       else reader.onload();
     });
 
-    
     document.getElementById("resetProfileBtn").addEventListener("click", () => {
       if (confirm("Reset your profile to default?")) {
         localStorage.removeItem("traderProfile");
