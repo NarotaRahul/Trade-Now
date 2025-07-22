@@ -128,7 +128,7 @@
               <label class="form-label">🌐 Language:</label>
               <select class="form-select mb-3" onchange="switchLanguage(this.value)">
                 <option value="en">English</option>
-                <option value="en">Hindi</option>
+                <option value="hi">Hindi</option>
                 <option value="en">Spanish</option>
                 <option value="en">German</option>
               </select>
@@ -215,7 +215,7 @@
 
     function switchLanguage(lang) {
       if (lang === "hi") {
-        window.location.href = "profile.html"; // Hindi version
+        window.location.href = "profile.html";
       } else {
         alert("🌐 You are already viewing the English version.");
       }
